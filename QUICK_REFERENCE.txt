@@ -1,0 +1,269 @@
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║           CONDOMINIUM LOTTERY REGISTRATION SYSTEM — QUICK REFERENCE              ║
+║                            Last Updated: May 25, 2026                             ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 QUICK START (60 seconds)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. COMPILE
+   cd "Condominium Lottery Registration System"
+   javac -d bin src/com/condolottery/enums/*.java \
+                 src/com/condolottery/exception/*.java \
+                 src/com/condolottery/model/*.java \
+                 src/com/condolottery/service/*.java \
+                 src/com/condolottery/util/*.java \
+                 src/com/condolottery/main/*.java
+
+2. RUN
+   java -cp bin com.condolottery.main.Main
+
+3. TEST
+   → Add condominium → Add units → Add applicants → Register → Draw → View results
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 CORE CLASSES (14 Total)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ABSTRACT BASE:
+  Person (abstract)
+    ├── Applicant (email, address, registrationDate)
+    └── Admin (role, department)
+
+MODELS:
+  Condominium (condoId, name, location, floors, units)
+  Unit (unitId, condoId, floor, number, area, price, type, status)
+  Registration (registrationId, applicantId, unitId, date, status)
+  LotteryResult (resultId, registrationId, applicantId, unitId, date, winner)
+
+SERVICES:
+  ApplicantService (implements Manageable<Applicant>)
+  CondominiumService (implements Manageable<Condominium>)
+  UnitService (implements Manageable<Unit>)
+  RegistrationService (implements Manageable<Registration>)
+  LotteryService (conductDraw, displayResults)
+
+INTERFACE:
+  Manageable<T> (add, displayAll, searchById, update)
+
+ENUMS:
+  UnitType (STUDIO, ONE_BEDROOM, TWO_BEDROOM, THREE_BEDROOM)
+  UnitStatus (AVAILABLE, RESERVED, SOLD)
+  RegistrationStatus (APPROVED, WON, LOST)
+
+EXCEPTIONS:
+  InvalidDataException (unchecked)
+  RegistrationException (checked)
+
+MAIN:
+  Main (console UI, menu-driven, orchestrates services)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔑 KEY OOP CONCEPTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ ABSTRACTION      Person is abstract, forces subclasses to implement displayInfo()
+✓ ENCAPSULATION    Private fields + public getters/setters (data hiding)
+✓ INHERITANCE      Applicant & Admin extend Person (code reuse)
+✓ POLYMORPHISM     displayInfo() overridden; same call, different output
+✓ INTERFACES       Manageable<T> defines CRUD contract
+✓ GENERICS         Manageable<T> for type-safe implementations
+✓ ENUMS            Type-safe constants (UnitStatus, RegistrationStatus)
+✓ EXCEPTIONS       Custom exceptions for validation & business rules
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📂 DATA FILES & FORMAT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+applicants.txt          ID|Name|Phone|Email|Address|Date
+condominiums.txt        ID|Name|Location|Floors|Units
+units.txt               ID|CondoID|Floor|Number|Area|Price|Type|Status
+registrations.txt       ID|ApplicantID|UnitID|Date|Status
+results.txt             ID|RegID|AppID|UnitID|Date|Winner
+
+All files: pipe-delimited, auto-created, auto-saved after each operation
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 MAIN MENU OPTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Manage Applicants      Operations: add, display, search
+2. Manage Condominiums    Operations: add, display, search
+3. Manage Units           Operations: add, display, search
+4. Manage Registrations   Operations: add, display, search (automatically approved)
+5. Conduct Lottery Draw   Random winner selection from registered applicants
+6. View Lottery Results   Display all draw winners and losers
+7. Demonstrate Polymorphism  Show List<Person> with mixed Applicant/Admin types
+8. Exit                   Terminate application
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔄 LIFECYCLE DIAGRAMS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+UNIT STATUS:
+  AVAILABLE ──(registration created)──> RESERVED ──(lottery drawn)──> SOLD
+
+REGISTRATION STATUS:
+  APPROVED ──(lottery drawn)──> WON or LOST
+
+TYPICAL WORKFLOW:
+  1. Add Condominium
+  2. Add Units (status: AVAILABLE)
+  3. Add Applicants
+  4. Create Registrations (unit → RESERVED, status: APPROVED)
+  5. Conduct Lottery Draw (→ WON/LOST, unit → SOLD)
+  6. View Results
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📖 DOCUMENTATION MAP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+START HERE:
+  PROJECT_REPORT.txt        ← Complete 4-page report (read first!)
+  UML_CLASS_DIAGRAM.puml    ← Visual class structure
+  QUICK_REFERENCE.txt       ← This file, for a fast overview
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚡ SERVICE CRUD PATTERN (All Services)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pattern:
+  Service service = new XyzService();      // Load from file
+  service.add(newItem);                    // Add to list + save
+  XyzClass found = service.searchById(id); // Search
+  service.update(item);                    // Update + save
+  service.displayAll();                    // Print all
+
+Exception Handling:
+  try {
+    service.add(item);
+  } catch (InvalidDataException e) {
+    System.out.println("[ERROR] " + e.getMessage());
+  }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🏗️ ARCHITECTURE LAYERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LAYER 1: PRESENTATION (Main.java)
+         ↓ Menu, user I/O
+LAYER 2: SERVICE (ApplicantService, etc.)
+         ↓ Business logic, CRUD, file I/O
+LAYER 3: MODEL (Applicant, Unit, etc.)
+         ↓ Data structures, getters/setters
+LAYER 4: UTILITY (Enums, Exceptions)
+         ↓ Type-safe constants, error handling
+LAYER 5: PERSISTENCE (data/*.txt files)
+         ↓ Pipe-delimited text files
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🐛 COMMON ISSUES & FIXES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ISSUE                          FIX
+──────────────────────────────────────────────────────────────────────────────
+FileNotFoundException          Run from project root, not src/ or bin/
+                               Path must be: cd "Condominium Lottery..."
+
+"error: cannot find symbol"    Recompile: rm -rf bin/* && javac -d bin src/...
+
+Duplicate ID error             Check data files or delete data/ directory
+
+Enum parse error               Verify enum names (exact case): TWO_BEDROOM (not two)
+
+Can't register for unit        Unit must be AVAILABLE (not RESERVED)
+
+Draw fails: No registrations   Create registrations first (they are automatically approved)
+
+Data doesn't persist           Ensure service.add() completes without error
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📝 KEY CODE EXAMPLES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INHERITANCE:
+  class Applicant extends Person {
+    super(id, fullName, phone);  // Call parent constructor
+    this.email = email;
+  }
+
+POLYMORPHISM:
+  List<Person> people = new ArrayList<>();
+  people.add(new Applicant(...));
+  people.add(new Admin(...));
+  for (Person p : people) {
+    System.out.println(p.displayInfo());  // Correct method called for each
+  }
+
+GENERICS & INTERFACES:
+  interface Manageable<T> {
+    void add(T item);
+    T searchById(String id);
+    // ...
+  }
+
+  class ApplicantService implements Manageable<Applicant> {
+    public void add(Applicant app) { /* ... */ }
+    public Applicant searchById(String id) { /* ... */ }
+  }
+
+ENUMS:
+  UnitStatus status = UnitStatus.AVAILABLE;
+  Unit unit = new Unit(..., ..., status);
+  unit.setStatus(UnitStatus.RESERVED);  // Type-safe!
+
+EXCEPTIONS:
+  try {
+    applicantService.add(app);
+  } catch (InvalidDataException e) {
+    System.out.println("[ERROR] " + e.getMessage());
+  }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ SUBMISSION CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+REQUIRED:
+  ☑ PROJECT_REPORT.txt          (Complete report with sample output)
+  ☑ UML_CLASS_DIAGRAM.puml      (PlantUML diagram)
+  ☑ QUICK_REFERENCE.txt         (Quick reference guide)
+  ☑ Source Code (src/)           (All .java files)
+
+RECOMMENDED:
+  ☑ Compiled classes (bin/)     (Generated by javac)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💡 TIPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Always compile from project root:
+   cd "Condominium Lottery Registration System"
+
+2. Test the complete workflow before submission:
+   Add → Units → Applicants → Register → Draw → View
+
+3. Use menu option 7 to demonstrate polymorphism to instructors
+
+4. All data is in data/*.txt files (human-readable format)
+
+5. Services auto-save after every operation (no data loss)
+
+6. Read PROJECT_REPORT.txt first for complete understanding
+
+7. UML diagram can be viewed online: https://www.plantuml.com/plantuml/uml/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROJECT LOCATION:
+  c:\Users\bekin\OneDrive\Desktop\Condominium Lottery Registration System\
+
+TOTAL FILES:
+  • 21 Java source files
+  • 3 Documentation files
+  • 1 UML diagram
+  • Ready for academic submission!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 READY TO SUBMIT! Good luck with your presentation! 🎓
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

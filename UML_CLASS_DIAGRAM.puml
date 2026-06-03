@@ -1,0 +1,455 @@
+@startuml Condominium_Lottery_System
+!define ABSTRACT_COLOR #FFE6CC
+!define INTERFACE_COLOR #E6F3FF
+!define MODEL_COLOR #F0F0F0
+!define SERVICE_COLOR #E6F9E6
+!define ENUM_COLOR #FFF9E6
+
+skinparam classBackgroundColor MODEL_COLOR
+skinparam classBorderColor #333333
+skinparam classArrowColor #333333
+skinparam classBackgroundColor<<abstract>> ABSTRACT_COLOR
+skinparam classBackgroundColor<<interface>> INTERFACE_COLOR
+skinparam classBackgroundColor<<service>> SERVICE_COLOR
+skinparam classBackgroundColor<<enum>> ENUM_COLOR
+
+' ==================== ENUMS ====================
+enum UnitType <<enum>> {
+  STUDIO
+  ONE_BEDROOM
+  TWO_BEDROOM
+  THREE_BEDROOM
+  --
+  - description: String
+  --
+  UnitType(description: String)
+  + getDescription(): String
+  + toString(): String
+}
+
+enum UnitStatus <<enum>> {
+  AVAILABLE
+  RESERVED
+  SOLD
+  --
+  - description: String
+  --
+  UnitStatus(description: String)
+  + getDescription(): String
+  + toString(): String
+}
+
+enum RegistrationStatus <<enum>> {
+  PENDING
+  APPROVED
+  WON
+  LOST
+  --
+  - description: String
+  --
+  RegistrationStatus(description: String)
+  + getDescription(): String
+  + toString(): String
+}
+
+' ==================== EXCEPTIONS ====================
+class InvalidDataException <<exception>> {
+  - {static} serialVersionUID: long
+  --
+  + InvalidDataException(message: String)
+  + InvalidDataException(message: String, cause: Throwable)
+}
+
+class RegistrationException <<exception>> {
+  - {static} serialVersionUID: long
+  --
+  + RegistrationException(message: String)
+  + RegistrationException(message: String, cause: Throwable)
+}
+
+' ==================== ABSTRACT BASE ====================
+abstract class Person <<abstract>> {
+  - id: String
+  - fullName: String
+  - phone: String
+  --
+  + Person(id, fullName, phone)
+  + getId(): String
+  + setId(id: String): void
+  + getFullName(): String
+  + setFullName(name: String): void
+  + getPhone(): String
+  + setPhone(phone: String): void
+  + {abstract} displayInfo(): String
+}
+
+' ==================== CONCRETE MODELS ====================
+class Applicant {
+  - email: String
+  - address: String
+  - registrationDate: String
+  --
+  + Applicant(id, name, phone, email, address, date)
+  + getEmail(): String
+  + setEmail(email: String): void
+  + getAddress(): String
+  + setAddress(address: String): void
+  + getRegistrationDate(): String
+  + setRegistrationDate(date: String): void
+  + displayInfo(): String
+}
+
+class Admin {
+  - role: String
+  - department: String
+  --
+  + Admin(id, name, phone, role, dept)
+  + getRole(): String
+  + setRole(role: String): void
+  + getDepartment(): String
+  + setDepartment(dept: String): void
+  + displayInfo(): String
+}
+
+class Condominium {
+  - condoId: String
+  - name: String
+  - location: String
+  - totalFloors: int
+  - totalUnits: int
+  --
+  + Condominium(id, name, location, floors, units)
+  + getCondoId(): String
+  + setCondoId(condoId: String): void
+  + getName(): String
+  + setName(name: String): void
+  + getLocation(): String
+  + setLocation(loc: String): void
+  + getTotalFloors(): int
+  + setTotalFloors(floors: int): void
+  + getTotalUnits(): int
+  + setTotalUnits(units: int): void
+  + displayInfo(): String
+}
+
+class Unit {
+  - unitId: String
+  - condoId: String
+  - floorNumber: int
+  - unitNumber: String
+  - area: double
+  - price: double
+  - unitType: UnitType
+  - status: UnitStatus
+  --
+  + Unit(id, condoId, floor, number, area, price, type, status)
+  + getUnitId(): String
+  + setUnitId(unitId: String): void
+  + getCondoId(): String
+  + setCondoId(condoId: String): void
+  + getFloorNumber(): int
+  + setFloorNumber(floorNumber: int): void
+  + getUnitNumber(): String
+  + setUnitNumber(unitNumber: String): void
+  + getArea(): double
+  + setArea(area: double): void
+  + getPrice(): double
+  + setPrice(price: double): void
+  + getUnitType(): UnitType
+  + setUnitType(unitType: UnitType): void
+  + getStatus(): UnitStatus
+  + setStatus(status: UnitStatus): void
+  + displayInfo(): String
+}
+
+class Registration {
+  - registrationId: String
+  - applicantId: String
+  - unitId: String
+  - registrationDate: String
+  - status: RegistrationStatus
+  --
+  + Registration(id, appId, unitId, date, status)
+  + getRegistrationId(): String
+  + setRegistrationId(registrationId: String): void
+  + getApplicantId(): String
+  + setApplicantId(applicantId: String): void
+  + getUnitId(): String
+  + setUnitId(unitId: String): void
+  + getRegistrationDate(): String
+  + setRegistrationDate(registrationDate: String): void
+  + getStatus(): RegistrationStatus
+  + setStatus(status: RegistrationStatus): void
+  + displayInfo(): String
+}
+
+class LotteryResult {
+  - resultId: String
+  - registrationId: String
+  - applicantId: String
+  - unitId: String
+  - drawDate: String
+  - winner: boolean
+  --
+  + LotteryResult(id, regId, appId, unitId, date, winner)
+  + getResultId(): String
+  + setResultId(resultId: String): void
+  + getRegistrationId(): String
+  + setRegistrationId(registrationId: String): void
+  + getApplicantId(): String
+  + setApplicantId(applicantId: String): void
+  + getUnitId(): String
+  + setUnitId(unitId: String): void
+  + getDrawDate(): String
+  + setDrawDate(drawDate: String): void
+  + isWinner(): boolean
+  + setWinner(winner: boolean): void
+  + displayInfo(): String
+}
+
+' ==================== SERVICE INTERFACE ====================
+interface Manageable<<interface>> {
+  + {abstract} add(item: T): void
+  + {abstract} displayAll(): void
+  + {abstract} searchById(id: String): T
+  + {abstract} update(item: T): void
+  + {abstract} delete(id: String): void
+}
+
+' ==================== SERVICES ====================
+class ApplicantService <<service>> {
+  - applicants: List<Applicant>
+  - {static} FILE_PATH: String
+  --
+  + ApplicantService()
+  + add(applicant: Applicant): void
+  + displayAll(): void
+  + searchById(id: String): Applicant
+  + update(applicant: Applicant): void
+  + delete(id: String): void
+  + getAll(): List<Applicant>
+  - loadFromFile(): void
+  - saveToFile(): void
+}
+
+class CondominiumService <<service>> {
+  - condominiums: List<Condominium>
+  - {static} FILE_PATH: String
+  --
+  + CondominiumService()
+  + add(condo: Condominium): void
+  + displayAll(): void
+  + searchById(id: String): Condominium
+  + update(condo: Condominium): void
+  + delete(id: String): void
+  + getAll(): List<Condominium>
+  - loadFromFile(): void
+  - saveToFile(): void
+}
+
+class UnitService <<service>> {
+  - units: List<Unit>
+  - {static} FILE_PATH: String
+  --
+  + UnitService()
+  + add(unit: Unit): void
+  + displayAll(): void
+  + searchById(id: String): Unit
+  + update(unit: Unit): void
+  + delete(id: String): void
+  + getAll(): List<Unit>
+  - loadFromFile(): void
+  - saveToFile(): void
+}
+
+class RegistrationService <<service>> {
+  - registrations: List<Registration>
+  - {static} FILE_PATH: String
+  --
+  + RegistrationService()
+  + add(registration: Registration): void
+  + displayAll(): void
+  + searchById(id: String): Registration
+  + update(registration: Registration): void
+  + delete(id: String): void
+  + getAll(): List<Registration>
+  + getApprovedRegistrationsByUnit(unitId: String): List<Registration>
+  - loadFromFile(): void
+  - saveToFile(): void
+}
+
+class LotteryService <<service>> {
+  - results: List<LotteryResult>
+  - random: Random
+  - {static} FILE_PATH: String
+  --
+  + LotteryService()
+  + conductDraw(unit: Unit, approved: List<Registration>, regSvc, unitSvc): void
+  + displayAllResults(): void
+  + displayWinners(): void
+  - loadFromFile(): void
+  - saveToFile(): void
+}
+
+' ==================== MAIN APPLICATION ====================
+class Main {
+  - {static} applicantService: ApplicantService
+  - {static} condominiumService: CondominiumService
+  - {static} unitService: UnitService
+  - {static} registrationService: RegistrationService
+  - {static} lotteryService: LotteryService
+  - {static} scanner: Scanner
+  - {static} validator: InputValidator
+  --
+  + {static} main(args: String[]): void
+  - {static} initializeServices(): void
+  - {static} displayWelcome(): void
+  - {static} getSubmenuChoice(title: String, options: String...): int
+  - {static} manageApplicants(): void
+  - {static} addApplicant(): void
+  - {static} searchApplicant(): void
+  - {static} updateApplicant(): void
+  - {static} deleteApplicant(): void
+  - {static} manageCondominiums(): void
+  - {static} addCondominium(): void
+  - {static} searchCondominium(): void
+  - {static} updateCondominium(): void
+  - {static} deleteCondominium(): void
+  - {static} manageUnits(): void
+  - {static} addUnit(): void
+  - {static} searchUnit(): void
+  - {static} updateUnit(): void
+  - {static} deleteUnit(): void
+  - {static} manageRegistrations(): void
+  - {static} addRegistration(): void
+  - {static} searchRegistration(): void
+  - {static} updateRegistration(): void
+  - {static} deleteRegistration(): void
+  - {static} conductLotteryDraw(): void
+  - {static} demonstratePolymorphism(): void
+}
+
+' ==================== UTILITY CLASSES ====================
+class InputValidator <<util>> {
+  - scanner: Scanner
+  --
+  + InputValidator(scanner: Scanner)
+  + readString(prompt: String): String
+  + readStringOptional(prompt: String, defaultValue: String): String
+  + readInt(prompt: String): int
+  + readIntOptional(prompt: String, defaultValue: int): int
+  + readDouble(prompt: String): double
+  + readDoubleOptional(prompt: String, defaultValue: double): double
+  + readChoice(min: int, max: int): int
+  + readChoiceOptional(prompt: String, min: int, max: int, defaultVal: int): int
+  + readConfirmation(message: String): boolean
+}
+
+class MenuHelper <<util>> {
+  - {static} BOX_TOP: String
+  - {static} BOX_MID: String
+  - {static} BOX_BOT: String
+  --
+  + {static} displayMainMenu(): void
+  + {static} displaySubMenu(title: String, options: String...): void
+  + {static} displayHeader(title: String): void
+  + {static} displaySuccess(message: String): void
+  + {static} displayInfo(message: String): void
+  + {static} displayError(message: String): void
+  + {static} displayWarning(message: String): void
+  - {static} padCenter(text: String, width: int): String
+}
+
+class UserMessages <<util>> {
+  --
+  + {static} addedSuccess(type: String, name: String): String
+  + {static} updatedSuccess(type: String): String
+  + {static} deletedSuccess(type: String, name: String): String
+  + {static} notFoundById(type: String, id: String): String
+  + {static} listEmpty(type: String): String
+  + {static} alreadyExists(type: String, id: String): String
+  + {static} unitNotAvailable(unitNumber: String): String
+  + {static} farewell(): String
+}
+
+' ==================== RELATIONSHIPS ====================
+
+' Inheritance
+Person <|-- Applicant : extends
+Person <|-- Admin : extends
+
+' Implementations
+Manageable <|.. ApplicantService : implements
+Manageable <|.. CondominiumService : implements
+Manageable <|.. UnitService : implements
+Manageable <|.. RegistrationService : implements
+
+' Associations
+Unit --> UnitType : uses
+Unit --> UnitStatus : uses
+
+Registration --> RegistrationStatus : uses
+
+' Service Usage
+Main --> ApplicantService : uses
+Main --> CondominiumService : uses
+Main --> UnitService : uses
+Main --> RegistrationService : uses
+Main --> LotteryService : uses
+
+ApplicantService --> Applicant : manages
+CondominiumService --> Condominium : manages
+UnitService --> Unit : manages
+RegistrationService --> Registration : manages
+LotteryService --> LotteryResult : manages
+
+' Exception Throws
+ApplicantService ..> InvalidDataException : throws
+CondominiumService ..> InvalidDataException : throws
+UnitService ..> InvalidDataException : throws
+RegistrationService ..> InvalidDataException : throws
+RegistrationService ..> RegistrationException : throws
+LotteryService ..> RegistrationException : throws
+
+' Exception Inheritance
+RuntimeException <|-- InvalidDataException : extends
+Exception <|-- RegistrationException : extends
+
+' Utility Usage
+Main --> InputValidator : uses
+Main --> MenuHelper : uses
+Main --> UserMessages : uses
+
+' Aggregations
+LotteryResult --> Registration : references
+LotteryResult --> Applicant : references
+LotteryResult --> Unit : references
+
+' Note
+note right of Person
+  Abstract base class enforcing
+  polymorphic displayInfo() method
+end note
+
+note right of Manageable
+  Generic interface defining standard
+  operations for all services
+end note
+
+note right of Unit
+  Transitions: AVAILABLE -> RESERVED -> SOLD
+  as registrations and draws progress
+end note
+
+note right of Registration
+  Links Applicant to Unit
+  Status: PENDING -> APPROVED -> (WON|LOST)
+end note
+
+note right of InputValidator
+  Utility package (com.condolottery.util)
+  provides input validation, menu display,
+  and user-friendly message formatting
+end note
+
+@enduml
