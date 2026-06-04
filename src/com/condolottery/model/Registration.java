@@ -1,38 +1,33 @@
 package com.condolottery.model;
 
 import com.condolottery.enums.RegistrationStatus;
+import com.condolottery.enums.UnitType;
 
 /**
- * Represents a lottery registration linking an applicant to a preferred unit.
- * Demonstrates: encapsulation and enum usage (RegistrationStatus).
+ * Represents a lottery registration.
+ * Demonstrates: encapsulation, and enum usage (RegistrationStatus, UnitType).
  */
 public class Registration {
 
-    // Private fields — encapsulation
     private String registrationId;
     private String applicantId;
-    private String unitId;
+    private UnitType unitType;
     private String registrationDate;
-    private RegistrationStatus status; // Enum usage
+    private RegistrationStatus status;
 
     /**
-     * Constructs a Registration with all required details.
-     * @param registrationId unique registration ID
-     * @param applicantId ID of the applicant
-     * @param unitId ID of the desired unit
-     * @param registrationDate date of registration (yyyy-MM-dd)
-     * @param status current registration status (enum)
+     * Constructs a new Registration.
+     * Demonstrates: constructor without complex chaining or super.
      */
-    public Registration(String registrationId, String applicantId, String unitId,
-                        String registrationDate, RegistrationStatus status) {
+    public Registration(String registrationId, String applicantId, UnitType unitType, String registrationDate, RegistrationStatus status) {
         this.registrationId = registrationId;
         this.applicantId = applicantId;
-        this.unitId = unitId;
+        this.unitType = unitType;
         this.registrationDate = registrationDate;
         this.status = status;
     }
 
-    // ==================== Getters and Setters ====================
+    // Getters and Setters demonstrate standard Encapsulation.
 
     public String getRegistrationId() {
         return registrationId;
@@ -50,12 +45,12 @@ public class Registration {
         this.applicantId = applicantId;
     }
 
-    public String getUnitId() {
-        return unitId;
+    public UnitType getUnitType() {
+        return unitType;
     }
 
-    public void setUnitId(String unitId) {
-        this.unitId = unitId;
+    public void setUnitType(UnitType unitType) {
+        this.unitType = unitType;
     }
 
     public String getRegistrationDate() {
@@ -74,25 +69,17 @@ public class Registration {
         this.status = status;
     }
 
-    // ==================== Display ====================
-
     /**
-     * Returns a formatted string with the registration's details.
-     * @return formatted info string
+     * Displays formatted details of the registration.
      */
     public String displayInfo() {
-        return String.format(
-            "╔══════════════════════════════════════════╗%n" +
-            "║         REGISTRATION DETAILS             ║%n" +
-            "╠══════════════════════════════════════════╣%n" +
-            "║ Reg. ID:      %-26s║%n" +
-            "║ Applicant ID: %-26s║%n" +
-            "║ Unit ID:      %-26s║%n" +
-            "║ Date:         %-26s║%n" +
-            "║ Status:       %-26s║%n" +
-            "╚══════════════════════════════════════════╝",
-            registrationId, applicantId, unitId, registrationDate,
-            status.getDescription()
-        );
+        String info = "";
+        info = info + "  [Registration Info]\n";
+        info = info + "  Registration ID : " + registrationId + "\n";
+        info = info + "  Applicant ID    : " + applicantId + "\n";
+        info = info + "  Unit Type       : " + unitType.name() + "\n";
+        info = info + "  Date            : " + registrationDate + "\n";
+        info = info + "  Status          : " + status.name() + "\n";
+        return info;
     }
 }

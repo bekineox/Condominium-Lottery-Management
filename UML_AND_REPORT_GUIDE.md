@@ -43,7 +43,7 @@ plantuml UML_CLASS_DIAGRAM.puml
 
 ### File: `PROJECT_REPORT.txt`
 **Format:** Plain text (readable in any editor)
-**Length:** ~4 pages
+**Length:** ~3 pages
 **Contains:**
 - Project title & description
 - System architecture diagram
@@ -74,26 +74,24 @@ The PlantUML diagram includes:
 │ THREE_BEDROOM        │
 └──────────────────────┘
 ```
-- **UnitType** — apartment size
-- **UnitStatus** — availability (AVAILABLE, RESERVED, SOLD)
-- **RegistrationStatus** — workflow state (APPROVED, WON, LOST)
+- **UnitType** — apartment size constant
+- **RegistrationStatus** — workflow state (PENDING, APPROVED, WON, LOST)
 
 ### Exceptions (Red/Pink boxes)
 ```
-├── InvalidDataException (unchecked)
-└── RegistrationException (checked)
+└── RegistrationException (checked exception)
 ```
 
-### Abstract Class (Peach boxes)
+### Base Class (Gray box)
 ```
 ┌──────────────────────────┐
-│ Person        <<abstract>>│
+│ Person                   │
 ├──────────────────────────┤
 │ - id: String             │
 │ - fullName: String       │
 │ - phone: String          │
 ├──────────────────────────┤
-│ + {abstract} displayInfo()│
+│ + displayInfo(): String  │
 └──────────────────────────┘
 ```
 
@@ -109,24 +107,10 @@ Admin (extends Person)
 ├── displayInfo() → admin format
 └── Inherits: id, fullName, phone
 
-Condominium
-├── condoId, name, location, floors, units
-└── displayInfo()
-
-Unit
-├── unitId, area, price, type, status
-├── status: UnitStatus (enum)
-└── lifecycle: AVAILABLE → RESERVED → SOLD
-
 Registration
-├── registrationId, applicantId, unitId
+├── registrationId, applicantId, unitType
 ├── status: RegistrationStatus (enum)
-└── lifecycle: APPROVED → WON/LOST
-
-LotteryResult
-├── resultId, registrationId, applicantId, unitId
-├── drawDate: String
-└── winner: boolean
+└── lifecycle: PENDING → WON/LOST
 ```
 
 ### Services (Green boxes)
@@ -135,14 +119,12 @@ Manageable<T> (Interface)
 ├── add(T)
 ├── displayAll()
 ├── searchById(id)
-└── update(T)
+├── update(T)
+└── delete(id)
 
 Implementations:
 ├── ApplicantService implements Manageable<Applicant>
-├── CondominiumService implements Manageable<Condominium>
-├── UnitService implements Manageable<Unit>
-├── RegistrationService implements Manageable<Registration>
-└── LotteryService (no CRUD interface)
+└── RegistrationService implements Manageable<Registration>
 
 Each service:
 ├── Private list of entities
@@ -157,10 +139,8 @@ Main
 ├── Static services
 ├── Scanner for input
 ├── displayMainMenu()
-├── getSubmenuChoice()
-├── CRUD sub-menus for each entity
-├── conductLotteryDraw()
-└── demonstratePolymorphism()
+├── CRUD sub-menus for applicant/registration
+└── conductLotteryDraw()
 ```
 
 ### Relationships
@@ -168,7 +148,6 @@ Main
 - **-|** (implements) — Interface implementation
 - **→** (uses) — Association/Dependency
 - **..→** (throws) — Exception throwing
-- **--** (references) — Aggregation
 
 ---
 
@@ -179,13 +158,11 @@ User starts application (Main.java)
          ↓
     MAIN MENU
     1. Manage Applicants
-    2. Manage Condominiums
-    3. Manage Units
-    4. Manage Registrations
-    5. Conduct Lottery Draw
-    6. View Lottery Results
-    7. Demonstrate Polymorphism
-    8. Exit
+    2. Manage Registrations
+    3. Conduct Lottery Draw
+    4. View Lottery Winners
+    5. Demonstrate Polymorphism
+    6. Exit
          ↓
     User selects option
          ↓
@@ -193,16 +170,14 @@ User starts application (Main.java)
     │         SERVICE LAYER                   │
     │                                          │
     │  ApplicantService                       │
-    │  ├── load from data/applicants.txt     │
-    │  ├── add/update in memory       │
-    │  └── save to data/applicants.txt       │
+    │  ├── load from data/applicants.txt      │
+    │  ├── add/update in memory               │
+    │  └── save to data/applicants.txt        │
     │                                          │
-    │  CondominiumService                     │
-    │  ├── load from data/condominiums.txt   │
-    │  ├── persistence operations                    │
+    │  RegistrationService                    │
+    │  ├── load from data/registrations.txt   │
+    │  ├── persistence operations             │
     │  └── save to file                       │
-    │                                          │
-    │  UnitService, RegistrationService, etc. │
     │                                          │
     └─────────────────────────────────────────┘
          ↓
@@ -212,7 +187,7 @@ User starts application (Main.java)
          ↓
     Return to MAIN MENU
          ↓
-    Repeat until user selects Exit (8)
+    Repeat until user selects Exit (6)
 ```
 
 ---
@@ -237,7 +212,7 @@ File updated: data/applicants.txt
     ↓
     Success message to user
     ↓
-Ready for next operation
+    Ready for next operation
 ```
 
 ---
@@ -272,30 +247,21 @@ Ready for next operation
 
 ```
 INHERITANCE HIERARCHY:
-    Person (abstract)
+    Person
     ├── Applicant
     └── Admin
 
 INTERFACE IMPLEMENTATIONS:
     Manageable<T> (interface)
     ├── ApplicantService
-    ├── CondominiumService
-    ├── UnitService
     └── RegistrationService
 
 ENUM USAGE:
-    UnitType ← used by Unit.unitType
-    UnitStatus ← used by Unit.status
+    UnitType ← used by Registration.unitType
     RegistrationStatus ← used by Registration.status
 
-AGGREGATIONS:
-    LotteryResult
-    ├── references Registration
-    ├── references Applicant
-    └── references Unit
-
 DEPENDENCIES:
-    Main depends on all services
+    Main depends on services
     Services depend on models
     Models depend on enums and exceptions
 ```
@@ -306,7 +272,7 @@ DEPENDENCIES:
 
 - [x] **Project Title** — Condominium Lottery Registration System
 - [x] **Description** — System architecture and purpose
-- [x] **Classes & Roles** — All 22 classes documented
+- [x] **Classes & Roles** — All 11 classes documented
 - [x] **OOP Concepts** — 8 main concepts explained with examples
 - [x] **UML Diagram** — Complete class diagram in PlantUML format
 - [x] **Sample Outputs** — Full workflow walkthrough with actual output
@@ -319,7 +285,7 @@ DEPENDENCIES:
 
 By studying this project, students learn:
 
-1. **Abstraction** — Abstract classes and interfaces
+1. **Abstraction** — Interfaces
 2. **Encapsulation** — Data hiding and controlled access
 3. **Inheritance** — Code reuse through class hierarchies
 4. **Polymorphism** — Runtime method dispatch
@@ -336,9 +302,9 @@ By studying this project, students learn:
 
 | Document | Purpose | Read Time |
 |----------|---------|-----------|
-| `PROJECT_REPORT.txt` | Complete analysis & sample output | 20-30 min |
+| `PROJECT_REPORT.txt` | Complete analysis & sample output | 15-20 min |
 | `QUICK_REFERENCE.txt` | Fast overview and compilation guide | 5 min |
-| `UML_CLASS_DIAGRAM.puml` | Visual class structure | 15 min |
+| `UML_CLASS_DIAGRAM.puml` | Visual class structure | 10 min |
 | `UML_AND_REPORT_GUIDE.md` | UML viewing instructions | 5 min |
 
 ---

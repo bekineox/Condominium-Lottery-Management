@@ -1,6 +1,6 @@
 ╔══════════════════════════════════════════════════════════════════════════════════╗
 ║           CONDOMINIUM LOTTERY REGISTRATION SYSTEM — QUICK REFERENCE              ║
-║                            Last Updated: May 25, 2026                             ║
+║                            Last Updated: June 4, 2026                            ║
 ╚══════════════════════════════════════════════════════════════════════════════════╝
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -9,78 +9,62 @@
 
 1. COMPILE
    cd "Condominium Lottery Registration System"
-   javac -d bin src/com/condolottery/enums/*.java \
-                 src/com/condolottery/exception/*.java \
-                 src/com/condolottery/model/*.java \
-                 src/com/condolottery/service/*.java \
-                 src/com/condolottery/util/*.java \
-                 src/com/condolottery/main/*.java
+   javac -d bin "@sources.txt"
 
 2. RUN
    java -cp bin com.condolottery.main.Main
 
 3. TEST
-   → Add condominium → Add units → Add applicants → Register → Draw → View results
+   → Add applicants → Register → Draw → View winners
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 CORE CLASSES (14 Total)
+📊 CORE CLASSES (11 Total)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-ABSTRACT BASE:
-  Person (abstract)
+BASE:
+  Person (base class)
     ├── Applicant (email, address, registrationDate)
     └── Admin (role, department)
 
 MODELS:
-  Condominium (condoId, name, location, floors, units)
-  Unit (unitId, condoId, floor, number, area, price, type, status)
-  Registration (registrationId, applicantId, unitId, date, status)
-  LotteryResult (resultId, registrationId, applicantId, unitId, date, winner)
+  Registration (registrationId, applicantId, unitType, date, status)
 
 SERVICES:
   ApplicantService (implements Manageable<Applicant>)
-  CondominiumService (implements Manageable<Condominium>)
-  UnitService (implements Manageable<Unit>)
   RegistrationService (implements Manageable<Registration>)
-  LotteryService (conductDraw, displayResults)
 
 INTERFACE:
-  Manageable<T> (add, displayAll, searchById, update)
+  Manageable<T> (add, displayAll, searchById, update, delete)
 
 ENUMS:
   UnitType (STUDIO, ONE_BEDROOM, TWO_BEDROOM, THREE_BEDROOM)
-  UnitStatus (AVAILABLE, RESERVED, SOLD)
-  RegistrationStatus (APPROVED, WON, LOST)
+  RegistrationStatus (PENDING, APPROVED, WON, LOST)
 
 EXCEPTIONS:
-  InvalidDataException (unchecked)
-  RegistrationException (checked)
+  RegistrationException (checked exception)
 
 MAIN:
-  Main (console UI, menu-driven, orchestrates services)
+  Main (console UI, menu-driven, orchestrates services, runs lottery)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🔑 KEY OOP CONCEPTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✓ ABSTRACTION      Person is abstract, forces subclasses to implement displayInfo()
+✓ ABSTRACTION      Manageable<T> defines CRUD contract
 ✓ ENCAPSULATION    Private fields + public getters/setters (data hiding)
 ✓ INHERITANCE      Applicant & Admin extend Person (code reuse)
 ✓ POLYMORPHISM     displayInfo() overridden; same call, different output
 ✓ INTERFACES       Manageable<T> defines CRUD contract
 ✓ GENERICS         Manageable<T> for type-safe implementations
-✓ ENUMS            Type-safe constants (UnitStatus, RegistrationStatus)
-✓ EXCEPTIONS       Custom exceptions for validation & business rules
+✓ ENUMS            Type-safe constants (UnitType, RegistrationStatus)
+✓ EXCEPTIONS       Custom checked exceptions for business rules
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📂 DATA FILES & FORMAT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 applicants.txt          ID|Name|Phone|Email|Address|Date
-condominiums.txt        ID|Name|Location|Floors|Units
-units.txt               ID|CondoID|Floor|Number|Area|Price|Type|Status
-registrations.txt       ID|ApplicantID|UnitID|Date|Status
-results.txt             ID|RegID|AppID|UnitID|Date|Winner
+registrations.txt       ID|ApplicantID|UnitType|Date|Status
 
 All files: pipe-delimited, auto-created, auto-saved after each operation
 
@@ -88,39 +72,32 @@ All files: pipe-delimited, auto-created, auto-saved after each operation
 🎯 MAIN MENU OPTIONS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. Manage Applicants      Operations: add, display, search
-2. Manage Condominiums    Operations: add, display, search
-3. Manage Units           Operations: add, display, search
-4. Manage Registrations   Operations: add, display, search (automatically approved)
-5. Conduct Lottery Draw   Random winner selection from registered applicants
-6. View Lottery Results   Display all draw winners and losers
-7. Demonstrate Polymorphism  Show List<Person> with mixed Applicant/Admin types
-8. Exit                   Terminate application
+1. Manage Applicants      Operations: add, display, search, delete
+2. Manage Registrations   Operations: add, display, delete
+3. Conduct Lottery Draw   Random winner selection from registered applicants
+4. View Lottery Winners   Display all draw winners
+5. Demonstrate Polymorphism  Show List<Person> with mixed Applicant/Admin types
+6. Exit                   Terminate application
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🔄 LIFECYCLE DIAGRAMS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-UNIT STATUS:
-  AVAILABLE ──(registration created)──> RESERVED ──(lottery drawn)──> SOLD
-
 REGISTRATION STATUS:
-  APPROVED ──(lottery drawn)──> WON or LOST
+  PENDING ──(lottery drawn)──> WON or LOST
 
 TYPICAL WORKFLOW:
-  1. Add Condominium
-  2. Add Units (status: AVAILABLE)
-  3. Add Applicants
-  4. Create Registrations (unit → RESERVED, status: APPROVED)
-  5. Conduct Lottery Draw (→ WON/LOST, unit → SOLD)
-  6. View Results
+  1. Add Applicants
+  2. Create Registrations (status: PENDING)
+  3. Conduct Lottery Draw (→ WON/LOST)
+  4. View Winners
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📖 DOCUMENTATION MAP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 START HERE:
-  PROJECT_REPORT.txt        ← Complete 4-page report (read first!)
+  PROJECT_REPORT.txt        ← Complete report
   UML_CLASS_DIAGRAM.puml    ← Visual class structure
   QUICK_REFERENCE.txt       ← This file, for a fast overview
 
@@ -137,8 +114,8 @@ Pattern:
 
 Exception Handling:
   try {
-    service.add(item);
-  } catch (InvalidDataException e) {
+    registrationService.add(item);
+  } catch (IllegalArgumentException e) {
     System.out.println("[ERROR] " + e.getMessage());
   }
 
@@ -147,10 +124,10 @@ Exception Handling:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 LAYER 1: PRESENTATION (Main.java)
-         ↓ Menu, user I/O
+         ↓ Menu, user I/O, lottery
 LAYER 2: SERVICE (ApplicantService, etc.)
          ↓ Business logic, CRUD, file I/O
-LAYER 3: MODEL (Applicant, Unit, etc.)
+LAYER 3: MODEL (Applicant, Registration)
          ↓ Data structures, getters/setters
 LAYER 4: UTILITY (Enums, Exceptions)
          ↓ Type-safe constants, error handling
@@ -166,17 +143,11 @@ ISSUE                          FIX
 FileNotFoundException          Run from project root, not src/ or bin/
                                Path must be: cd "Condominium Lottery..."
 
-"error: cannot find symbol"    Recompile: rm -rf bin/* && javac -d bin src/...
+"error: cannot find symbol"    Recompile: rm -rf bin/* && javac -d bin "@sources.txt"
 
 Duplicate ID error             Check data files or delete data/ directory
 
-Enum parse error               Verify enum names (exact case): TWO_BEDROOM (not two)
-
-Can't register for unit        Unit must be AVAILABLE (not RESERVED)
-
-Draw fails: No registrations   Create registrations first (they are automatically approved)
-
-Data doesn't persist           Ensure service.add() completes without error
+Enum parse error               Verify enum names (exact case): STUDIO (not studio)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📝 KEY CODE EXAMPLES
@@ -184,8 +155,8 @@ Data doesn't persist           Ensure service.add() completes without error
 
 INHERITANCE:
   class Applicant extends Person {
-    super(id, fullName, phone);  // Call parent constructor
-    this.email = email;
+    super(null, null, null);  // Chain constructor
+    setId(id);
   }
 
 POLYMORPHISM:
@@ -208,18 +179,6 @@ GENERICS & INTERFACES:
     public Applicant searchById(String id) { /* ... */ }
   }
 
-ENUMS:
-  UnitStatus status = UnitStatus.AVAILABLE;
-  Unit unit = new Unit(..., ..., status);
-  unit.setStatus(UnitStatus.RESERVED);  // Type-safe!
-
-EXCEPTIONS:
-  try {
-    applicantService.add(app);
-  } catch (InvalidDataException e) {
-    System.out.println("[ERROR] " + e.getMessage());
-  }
-
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ SUBMISSION CHECKLIST
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -235,15 +194,14 @@ RECOMMENDED:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💡 TIPS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. Always compile from project root:
    cd "Condominium Lottery Registration System"
 
 2. Test the complete workflow before submission:
-   Add → Units → Applicants → Register → Draw → View
+   Add Applicants → Register → Draw → View Winners
 
-3. Use menu option 7 to demonstrate polymorphism to instructors
+3. Use menu option 5 to demonstrate polymorphism to instructors
 
 4. All data is in data/*.txt files (human-readable format)
 
@@ -259,7 +217,7 @@ PROJECT LOCATION:
   c:\Users\bekin\OneDrive\Desktop\Condominium Lottery Registration System\
 
 TOTAL FILES:
-  • 21 Java source files
+  • 11 Java source files
   • 3 Documentation files
   • 1 UML diagram
   • Ready for academic submission!

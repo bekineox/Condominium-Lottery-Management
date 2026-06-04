@@ -3,7 +3,6 @@ package com.condolottery.model;
 /**
  * Represents an administrator who manages the lottery system.
  * Demonstrates: inheritance (extends Person), polymorphism (overrides displayInfo()),
- * constructor chaining (super()), super keyword for method calls,
  * and encapsulation (private fields with getters/setters).
  */
 public class Admin extends Person {
@@ -14,7 +13,7 @@ public class Admin extends Person {
 
     /**
      * Constructs an Admin with all required details.
-     * Demonstrates: constructor chaining using super() to call parent constructor.
+     * Demonstrates: traditional constructor without super() chaining.
      * @param id unique admin ID
      * @param fullName full name
      * @param phone phone number
@@ -23,7 +22,13 @@ public class Admin extends Person {
      */
     public Admin(String id, String fullName, String phone,
                  String role, String department) {
-        super(id, fullName, phone); // Constructor chaining — calls Person constructor
+        super(null, null, null); // Call to parent constructor is required, we use nulls initially
+        
+        // Use inherited setters
+        setId(id);
+        setFullName(fullName);
+        setPhone(phone);
+        
         this.role = role;
         this.department = department;
     }
@@ -50,21 +55,27 @@ public class Admin extends Person {
 
     /**
      * Displays admin-specific information.
-     * Overrides the abstract method in Person — demonstrates polymorphism and dynamic binding.
+     * Overrides the method in Person — demonstrates polymorphism and dynamic binding.
      * @return formatted admin details
      */
     public String displayInfo() {
-        return String.format(
-            "╔══════════════════════════════════════════╗%n" +
-            "║             ADMIN DETAILS                ║%n" +
-            "╠══════════════════════════════════════════╣%n" +
-            "║ ID:         %-28s║%n" +
-            "║ Name:       %-28s║%n" +
-            "║ Phone:      %-28s║%n" +
-            "║ Role:       %-28s║%n" +
-            "║ Department: %-28s║%n" +
-            "╚══════════════════════════════════════════╝",
-            getId(), getFullName(), getPhone(), role, department
-        );
+        return "╔══════════════════════════════════════════╗\n" +
+               "║             ADMIN DETAILS                ║\n" +
+               "╠══════════════════════════════════════════╣\n" +
+               "║ ID:         " + padRight(getId(), 28) + "║\n" +
+               "║ Name:       " + padRight(getFullName(), 28) + "║\n" +
+               "║ Phone:      " + padRight(getPhone(), 28) + "║\n" +
+               "║ Role:       " + padRight(role, 28) + "║\n" +
+               "║ Department: " + padRight(department, 28) + "║\n" +
+               "╚══════════════════════════════════════════╝";
+    }
+
+    // Helper method for padding string
+    private String padRight(String s, int n) {
+        String result = s;
+        while (result.length() < n) {
+            result += " ";
+        }
+        return result;
     }
 }

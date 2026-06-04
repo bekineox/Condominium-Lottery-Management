@@ -1,25 +1,26 @@
 package com.condolottery.service;
 
-import com.condolottery.exception.InvalidDataException;
-
 import com.condolottery.model.Applicant;
-import com.condolottery.util.MenuHelper;
-import com.condolottery.util.UserMessages;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Service class for managing Applicant operations.
  * Demonstrates: interface implementation (Manageable), generic List,
- * file I/O, Streams, and exception handling.
+ * traditional file I/O, loops, and exception handling.
  */
 public class ApplicantService implements Manageable<Applicant> {
 
-    private final List<Applicant> applicants = new ArrayList<>();
-    private static final String FILE_PATH = "data/applicants.txt";
+    private List<Applicant> applicants = new ArrayList<>();
+    private String FILE_PATH = "data/applicants.txt";
 
     /**
      * Constructs an ApplicantService and loads existing data from file.
@@ -28,55 +29,57 @@ public class ApplicantService implements Manageable<Applicant> {
         loadFromFile();
     }
 
-    @Override
     public void add(Applicant applicant) {
         if (searchById(applicant.getId()) != null) {
-            throw new InvalidDataException(UserMessages.alreadyExists("Applicant", applicant.getId()));
+            throw new IllegalArgumentException("Applicant with ID '" + applicant.getId() + "' already exists.");
         }
         applicants.add(applicant);
         saveToFile();
-        MenuHelper.displaySuccess(UserMessages.addedSuccess("applicant", applicant.getFullName()));
+        System.out.println("  [SUCCESS] Applicant added: " + applicant.getFullName());
     }
 
-    @Override
     public void displayAll() {
         if (applicants.isEmpty()) {
-            MenuHelper.displayInfo(UserMessages.listEmpty("applicants"));
+            System.out.println("  [INFO] No applicants found.");
             return;
         }
         System.out.println("\n  📋 ALL REGISTERED APPLICANTS (" + applicants.size() + ")\n");
-        applicants.forEach(applicant -> System.out.println(applicant.displayInfo()));
+        for (int i = 0; i < applicants.size(); i++) {
+            Applicant applicant = applicants.get(i);
+            System.out.println(applicant.displayInfo());
+        }
     }
 
-    @Override
     public Applicant searchById(String applicantId) {
-        return applicants.stream()
-                .filter(applicant -> applicant.getId().equalsIgnoreCase(applicantId))
-                .findFirst()
-                .orElse(null);
+        for (int i = 0; i < applicants.size(); i++) {
+            Applicant applicant = applicants.get(i);
+            if (applicant.getId().equalsIgnoreCase(applicantId)) {
+                return applicant;
+            }
+        }
+        return null;
     }
 
-    @Override
     public void update(Applicant updatedApplicant) {
         for (int i = 0; i < applicants.size(); i++) {
-            if (applicants.get(i).getId().equalsIgnoreCase(updatedApplicant.getId())) {
+            Applicant applicant = applicants.get(i);
+            if (applicant.getId().equalsIgnoreCase(updatedApplicant.getId())) {
                 applicants.set(i, updatedApplicant);
                 saveToFile();
                 return;
             }
         }
-        throw new InvalidDataException(UserMessages.notFoundById("applicant", updatedApplicant.getId()));
+        throw new IllegalArgumentException("Applicant with ID '" + updatedApplicant.getId() + "' not found.");
     }
 
-    @Override
     public void delete(String applicantId) {
         Applicant applicantToRemove = searchById(applicantId);
         if (applicantToRemove == null) {
-            throw new InvalidDataException(UserMessages.notFoundById("applicant", applicantId));
+            throw new IllegalArgumentException("Applicant with ID '" + applicantId + "' not found.");
         }
         applicants.remove(applicantToRemove);
         saveToFile();
-        MenuHelper.displaySuccess(UserMessages.deletedSuccess("applicant", applicantToRemove.getFullName()));
+        System.out.println("  [SUCCESS] Applicant deleted: " + applicantToRemove.getFullName());
     }
 
     public List<Applicant> getAll() {
@@ -87,18 +90,37 @@ public class ApplicantService implements Manageable<Applicant> {
      * Loads applicant data from the text file.
      */
     private void loadFromFile() {
-        Path path = Paths.get(FILE_PATH);
-        if (!Files.exists(path)) return;
+        File file = new File(FILE_PATH);
+        if (!file.exists()) {
+            return;
+        }
         try {
-            for (String line : Files.readAllLines(path)) {
-                if (line.trim().isEmpty()) continue;
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
                 try {
-                    String[] parts = line.split("\\|");
-                    applicants.add(new Applicant(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]));
+                    // Manual split using traditional scanner approach
+                    Scanner lineScanner = new Scanner(line);
+                    lineScanner.useDelimiter("\\|");
+                    Applicant applicant = new Applicant(
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.next()
+                    );
+                    applicants.add(applicant);
                 } catch (Exception e) {
                     System.err.println("  [WARNING] Skipping malformed line: " + line);
                 }
             }
+            bufferedReader.close();
+            fileReader.close();
         } catch (IOException e) {
             System.err.println("  [ERROR] Failed to read applicants file: " + e.getMessage());
         }
@@ -106,19 +128,28 @@ public class ApplicantService implements Manageable<Applicant> {
 
     private void saveToFile() {
         try {
-            Files.createDirectories(Paths.get("data"));
-            List<String> lines = new ArrayList<>();
-            for (Applicant applicant : applicants) {
-                lines.add(String.join("|",
-                    applicant.getId(),
-                    applicant.getFullName(),
-                    applicant.getPhone(),
-                    applicant.getEmail(),
-                    applicant.getAddress(),
-                    applicant.getRegistrationDate()
-                ));
+            File directory = new File("data");
+            if (!directory.exists()) {
+                directory.mkdir();
             }
-            Files.write(Paths.get(FILE_PATH), lines);
+            
+            File file = new File(FILE_PATH);
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            
+            for (int i = 0; i < applicants.size(); i++) {
+                Applicant applicant = applicants.get(i);
+                String line = applicant.getId() + "|" +
+                              applicant.getFullName() + "|" +
+                              applicant.getPhone() + "|" +
+                              applicant.getEmail() + "|" +
+                              applicant.getAddress() + "|" +
+                              applicant.getRegistrationDate();
+                bufferedWriter.write(line);
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+            fileWriter.close();
         } catch (IOException e) {
             System.err.println("  [ERROR] Failed to write applicants file: " + e.getMessage());
         }

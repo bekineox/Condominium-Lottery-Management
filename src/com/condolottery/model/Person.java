@@ -1,11 +1,11 @@
 package com.condolottery.model;
 
 /**
- * Abstract base class representing a person in the system.
- * Demonstrates: abstraction, encapsulation, and polymorphism (via abstract method).
+ * Base class representing a person in the system.
+ * Demonstrates: encapsulation, and basic inheritance (no abstract).
  * Subclasses: Applicant, Admin
  */
-public abstract class Person {
+public class Person {
 
     // Private fields — encapsulation
     private String id;
@@ -51,12 +51,14 @@ public abstract class Person {
         this.phone = phone;
     }
 
-    // ==================== Abstract Method (Polymorphism) ====================
+    // ==================== Method (Polymorphism basis) ====================
 
     /**
      * Returns a formatted string with the person's details.
-     * Must be overridden by all subclasses — enables dynamic binding.
+     * Overridden by subclasses.
      * @return formatted info string
      */
-    public abstract String displayInfo();
+    public String displayInfo() {
+        return "ID: " + id + "\nName: " + fullName + "\nPhone: " + phone;
+    }
 }

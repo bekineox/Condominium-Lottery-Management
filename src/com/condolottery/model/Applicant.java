@@ -3,7 +3,7 @@ package com.condolottery.model;
 /**
  * Represents an applicant who registers for the condominium lottery.
  * Demonstrates: inheritance (extends Person), polymorphism (overrides displayInfo()),
- * constructor chaining (super()), and encapsulation (private fields with getters/setters).
+ * and encapsulation (private fields with getters/setters).
  */
 public class Applicant extends Person {
 
@@ -14,7 +14,7 @@ public class Applicant extends Person {
 
     /**
      * Constructs an Applicant with all required details.
-     * Demonstrates: constructor chaining using super() to call parent constructor.
+     * Demonstrates: traditional constructor without super() chaining.
      * @param id unique applicant ID
      * @param fullName full name
      * @param phone phone number
@@ -24,7 +24,13 @@ public class Applicant extends Person {
      */
     public Applicant(String id, String fullName, String phone,
                      String email, String address, String registrationDate) {
-        super(id, fullName, phone); // Constructor chaining — calls Person constructor
+        super(null, null, null); // Call to parent constructor is required, we use nulls initially
+        
+        // Use inherited setters
+        setId(id);
+        setFullName(fullName);
+        setPhone(phone);
+        
         this.email = email;
         this.address = address;
         this.registrationDate = registrationDate;
@@ -60,22 +66,28 @@ public class Applicant extends Person {
 
     /**
      * Displays applicant-specific information.
-     * Overrides the abstract method in Person — demonstrates polymorphism and dynamic binding.
+     * Overrides the method in Person — demonstrates polymorphism and dynamic binding.
      * @return formatted applicant details
      */
     public String displayInfo() {
-        return String.format(
-            "╔══════════════════════════════════════════╗%n" +
-            "║           APPLICANT DETAILS              ║%n" +
-            "╠══════════════════════════════════════════╣%n" +
-            "║ ID:                %-22s║%n" +
-            "║ Name:              %-22s║%n" +
-            "║ Phone:             %-22s║%n" +
-            "║ Email:             %-22s║%n" +
-            "║ Address:           %-22s║%n" +
-            "║ Registration Date: %-22s║%n" +
-            "╚══════════════════════════════════════════╝",
-            getId(), getFullName(), getPhone(), email, address, registrationDate
-        );
+        return "╔══════════════════════════════════════════╗\n" +
+               "║           APPLICANT DETAILS              ║\n" +
+               "╠══════════════════════════════════════════╣\n" +
+               "║ ID:                " + padRight(getId(), 22) + "║\n" +
+               "║ Name:              " + padRight(getFullName(), 22) + "║\n" +
+               "║ Phone:             " + padRight(getPhone(), 22) + "║\n" +
+               "║ Email:             " + padRight(email, 22) + "║\n" +
+               "║ Address:           " + padRight(address, 22) + "║\n" +
+               "║ Registration Date: " + padRight(registrationDate, 22) + "║\n" +
+               "╚══════════════════════════════════════════╝";
+    }
+
+    // Helper method for padding string
+    private String padRight(String s, int n) {
+        String result = s;
+        while (result.length() < n) {
+            result += " ";
+        }
+        return result;
     }
 }
