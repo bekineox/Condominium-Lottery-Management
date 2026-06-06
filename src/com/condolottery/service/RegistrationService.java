@@ -14,18 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Service class for managing lottery Registration operations.
- * traditional file I/O, loops, and exception handling.
- */
+
 public class RegistrationService implements Manageable<Registration> {
 
     private List<Registration> registrations = new ArrayList<>();
     private String FILE_PATH = "data/registrations.txt";
 
-    /**
-     * Constructs a RegistrationService and loads existing data from file.
-     */
+    
     public RegistrationService() {
         loadFromFile();
     }
@@ -85,9 +80,7 @@ public class RegistrationService implements Manageable<Registration> {
         System.out.println("  [SUCCESS] Registration deleted: " + registrationId);
     }
 
-    /**
-     * Returns all registrations for a specific unit type with PENDING status.
-     */
+    
     public List<Registration> getPendingRegistrationsByType(UnitType unitType) {
         List<Registration> pendingList = new ArrayList<>();
         for (int i = 0; i < registrations.size(); i++) {

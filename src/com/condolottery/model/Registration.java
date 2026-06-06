@@ -3,9 +3,7 @@ package com.condolottery.model;
 import com.condolottery.enums.RegistrationStatus;
 import com.condolottery.enums.UnitType;
 
-/**
- * Represents a lottery registration.
- */
+
 public class Registration {
 
     private String registrationId;
@@ -14,9 +12,7 @@ public class Registration {
     private String registrationDate;
     private RegistrationStatus status;
 
-    /**
-     * Constructs a new Registration.
-     */
+    
     public Registration(String registrationId, String applicantId, UnitType unitType, String registrationDate, RegistrationStatus status) {
         this.registrationId = registrationId;
         this.applicantId = applicantId;
@@ -25,7 +21,7 @@ public class Registration {
         this.status = status;
     }
 
-    // Getters and Setters demonstrate standard Encapsulation.
+   
 
     public String getRegistrationId() {
         return registrationId;
@@ -67,9 +63,7 @@ public class Registration {
         this.status = status;
     }
 
-    /**
-     * Displays formatted details of the registration.
-     */
+    
     public String displayInfo() {
         String info = "";
         info = info + "  [Registration Info]\n";

@@ -12,18 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Service class for managing Applicant operations.
- * traditional file I/O, loops, and exception handling.
- */
+
 public class ApplicantService implements Manageable<Applicant> {
 
     private List<Applicant> applicants = new ArrayList<>();
     private String FILE_PATH = "data/applicants.txt";
 
-    /**
-     * Constructs an ApplicantService and loads existing data from file.
-     */
+    
     public ApplicantService() {
         loadFromFile();
     }
@@ -85,9 +80,7 @@ public class ApplicantService implements Manageable<Applicant> {
         return applicants;
     }
 
-    /**
-     * Loads applicant data from the text file.
-     */
+    
     private void loadFromFile() {
         File file = new File(FILE_PATH);
         if (!file.exists()) {

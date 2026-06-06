@@ -18,11 +18,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-/**
- * Entry point of the Condominium Lottery Registration System.
- * Demonstrates basic OOP principles without complex syntax.
- * 
- */
 public class Main {
 
     private static ApplicantService applicantService;
@@ -79,7 +74,7 @@ public class Main {
         System.out.println("╚══════════════════════════════════════════╝");
     }
 
-    // ==================== UTILITY INPUT METHODS ====================
+   
 
     private static String readString(String prompt) {
         while (true) {
@@ -121,7 +116,7 @@ public class Main {
         return false;
     }
 
-    // ==================== APPLICANT MANAGEMENT ====================
+    
 
     private static void manageApplicants() {
         while (true) {
@@ -201,7 +196,7 @@ public class Main {
         System.out.println("  [SUCCESS] Applicant updated.");
     }
 
-    // ==================== REGISTRATION MANAGEMENT ====================
+    
 
     private static void manageRegistrations() {
         while (true) {
@@ -312,21 +307,21 @@ public class Main {
         System.out.println("\n  ======= SYSTEM DIRECTORY (Polymorphism Demo) =======");
         List<Person> systemUsers = new ArrayList<>();
         
-        // Add predefined admin(s)
+        
         systemUsers.add(new Admin("ADM-001", "Alice SystemAdmin", "555-0001", "Super Admin", "IT Dept"));
         systemUsers.add(new Admin("ADM-002", "Bob Coordinator", "555-0002", "Lottery Manager", "Operations"));
         
-        // Add all applicants
+        
         systemUsers.addAll(applicantService.getAll());
         
-        // Dynamic binding: calls Applicant.displayInfo() or Admin.displayInfo()
+       
         for (int i = 0; i < systemUsers.size(); i++) {
             Person person = systemUsers.get(i);
             System.out.println(person.displayInfo());
         }
     }
 
-    // ==================== SYSTEM STATISTICS ====================
+    
 
     private static void displaySystemStatistics() {
         System.out.println("\n  ======= SYSTEM STATISTICS DASHBOARD =======");
@@ -344,7 +339,7 @@ public class Main {
             return;
         }
 
-        // Calculate most popular unit type
+        
         int[] typeCounts = new int[UnitType.values().length];
         int winnersCount = 0;
         
@@ -367,7 +362,7 @@ public class Main {
         System.out.println("  ===========================================");
     }
 
-    // ==================== LOTTERY OPERATIONS ====================
+    
 
     private static void conductLotteryDraw() {
         System.out.println("\n  --- Conduct Lottery Draw ---");
@@ -408,7 +403,7 @@ public class Main {
             registrationService.update(registration);
         }
 
-        // Save all changes
+        
         registrationService.saveToFile();
         System.out.println("\n  ✓ Lottery draw completed successfully!");
     }
