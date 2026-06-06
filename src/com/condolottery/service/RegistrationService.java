@@ -2,7 +2,6 @@ package com.condolottery.service;
 
 import com.condolottery.enums.RegistrationStatus;
 import com.condolottery.enums.UnitType;
-import com.condolottery.exception.RegistrationException;
 import com.condolottery.model.Registration;
 
 import java.io.File;
@@ -17,7 +16,6 @@ import java.util.Scanner;
 
 /**
  * Service class for managing lottery Registration operations.
- * Demonstrates: interface implementation (Manageable), generic List,
  * traditional file I/O, loops, and exception handling.
  */
 public class RegistrationService implements Manageable<Registration> {
@@ -89,7 +87,6 @@ public class RegistrationService implements Manageable<Registration> {
 
     /**
      * Returns all registrations for a specific unit type with PENDING status.
-     * Demonstrates: traditional loop and conditional checking.
      */
     public List<Registration> getPendingRegistrationsByType(UnitType unitType) {
         List<Registration> pendingList = new ArrayList<>();
@@ -120,8 +117,7 @@ public class RegistrationService implements Manageable<Registration> {
                 if (line.trim().isEmpty()) {
                     continue;
                 }
-                try {
-                    Scanner lineScanner = new Scanner(line);
+                try (Scanner lineScanner = new Scanner(line)) {
                     lineScanner.useDelimiter("\\|");
                     Registration registration = new Registration(
                         lineScanner.next(),

@@ -2,8 +2,6 @@ package com.condolottery.model;
 
 /**
  * Represents an administrator who manages the lottery system.
- * Demonstrates: inheritance (extends Person), polymorphism (overrides displayInfo()),
- * and encapsulation (private fields with getters/setters).
  */
 public class Admin extends Person {
 
@@ -13,7 +11,6 @@ public class Admin extends Person {
 
     /**
      * Constructs an Admin with all required details.
-     * Demonstrates: traditional constructor without super() chaining.
      * @param id unique admin ID
      * @param fullName full name
      * @param phone phone number
@@ -62,11 +59,11 @@ public class Admin extends Person {
         return "╔══════════════════════════════════════════╗\n" +
                "║             ADMIN DETAILS                ║\n" +
                "╠══════════════════════════════════════════╣\n" +
-               "║ ID:         " + padRight(getId(), 28) + "║\n" +
-               "║ Name:       " + padRight(getFullName(), 28) + "║\n" +
-               "║ Phone:      " + padRight(getPhone(), 28) + "║\n" +
-               "║ Role:       " + padRight(role, 28) + "║\n" +
-               "║ Department: " + padRight(department, 28) + "║\n" +
+               "║ ID:         " + padRight(getId(), 29) + "║\n" +
+               "║ Name:       " + padRight(getFullName(), 29) + "║\n" +
+               "║ Phone:      " + padRight(getPhone(), 29) + "║\n" +
+               "║ Role:       " + padRight(role, 29) + "║\n" +
+               "║ Department: " + padRight(department, 29) + "║\n" +
                "╚══════════════════════════════════════════╝";
     }
 

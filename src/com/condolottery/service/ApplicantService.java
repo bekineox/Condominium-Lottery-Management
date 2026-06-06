@@ -14,7 +14,6 @@ import java.util.Scanner;
 
 /**
  * Service class for managing Applicant operations.
- * Demonstrates: interface implementation (Manageable), generic List,
  * traditional file I/O, loops, and exception handling.
  */
 public class ApplicantService implements Manageable<Applicant> {
@@ -102,9 +101,7 @@ public class ApplicantService implements Manageable<Applicant> {
                 if (line.trim().isEmpty()) {
                     continue;
                 }
-                try {
-                    // Manual split using traditional scanner approach
-                    Scanner lineScanner = new Scanner(line);
+                try (Scanner lineScanner = new Scanner(line)) {
                     lineScanner.useDelimiter("\\|");
                     Applicant applicant = new Applicant(
                         lineScanner.next(),

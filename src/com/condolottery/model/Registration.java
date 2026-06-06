@@ -5,7 +5,6 @@ import com.condolottery.enums.UnitType;
 
 /**
  * Represents a lottery registration.
- * Demonstrates: encapsulation, and enum usage (RegistrationStatus, UnitType).
  */
 public class Registration {
 
@@ -17,7 +16,6 @@ public class Registration {
 
     /**
      * Constructs a new Registration.
-     * Demonstrates: constructor without complex chaining or super.
      */
     public Registration(String registrationId, String applicantId, UnitType unitType, String registrationDate, RegistrationStatus status) {
         this.registrationId = registrationId;

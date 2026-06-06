@@ -2,6 +2,9 @@
 
 > A console-based Java application for managing condominium unit type lotteries — from applicant registration through randomized draws to winner announcement.
 
+**Submitted to:** Abdisa K.  
+**Submission Date:** Last week of second semester  
+
 ---
 
 ## Table of Contents
@@ -37,12 +40,13 @@ The **Condominium Lottery Registration System** is a Java SE application designe
 
 | Feature                    | Description                                                        |
 |----------------------------|--------------------------------------------------------------------|
-| **Applicant Management**   | Core operations — add, view, search, and delete applicants         |
-| **Registration System**    | Link applicants to unit types (registered as PENDING status)       |
+| **Applicant Management**   | Core operations — add, view, search, update, and delete applicants |
+| **Registration System**    | Core operations — add, view, search, update, and delete registrations |
 | **Lottery Draw**           | Random winner selection from registered applicants per unit type   |
 | **Result Tracking**        | View all lottery draw outcomes (winners and losers)                |
+| **System Directory**       | Polymorphic view combining Admins and Applicants into a single list|
+| **System Statistics**      | Aggregated metrics dashboard (totals, winners, popular unit types) |
 | **Data Persistence**       | Automatic file-based storage using pipe-delimited `.txt` files     |
-| **Polymorphism Demo**      | Built-in demonstration of OOP polymorphism and dynamic binding     |
 
 ---
 
@@ -131,7 +135,6 @@ This project was built as a comprehensive demonstration of core Object-Oriented 
 ### 4. Polymorphism & Dynamic Binding
 - Both `Applicant` and `Admin` override `displayInfo()` from `Person`.
 - A `List<Person>` can hold both types; calling `displayInfo()` on each element invokes the correct subclass method at runtime.
-- The **Demonstrate Polymorphism** menu option (option 5) showcases this explicitly.
 
 ### 5. Interfaces & Generics
 - **`Manageable<T>`** — a generic interface defining `add(T)`, `displayAll()`, `searchById(String)`, `update(T)`, and `delete(String)`.
@@ -259,6 +262,14 @@ All data is stored in pipe-delimited (`|`) text files under the `data/` director
          ▼
 ┌──────────────────────────┐
 │  4. View Winners         │  See all results showing winners
+└────────┬─────────────────┘
+         ▼
+┌──────────────────────────┐
+│  5. System Directory     │  View all users (Admins & Applicants)
+└────────┬─────────────────┘
+         ▼
+┌──────────────────────────┐
+│  6. System Statistics    │  View aggregated data (most popular unit, totals)
 └──────────────────────────┘
 ```
 
@@ -293,15 +304,21 @@ java -cp bin com.condolottery.main.Main
 
 ### Managing Applicants
 1. Select **option 1** from the Main Menu
-2. Choose from the Applicant sub-menu to Add, Display, Search, or Delete.
+2. Choose from the Applicant sub-menu to Add, Display, Search, Delete, or Update.
 
 ### Managing Registrations
 1. Select **option 2** from the Main Menu
-2. Choose from the Registration sub-menu to register an applicant.
+2. Choose from the Registration sub-menu to Add, Display, Search, Update, or Delete registrations.
 
 ### Conducting a Lottery Draw
 1. Select **option 3** from the Main Menu
 2. Select a UnitType to draw for.
+
+### View System Directory
+1. Select **option 5** from the Main Menu to see polymorphic output of all system users.
+
+### System Statistics Dashboard
+1. Select **option 6** from the Main Menu to view calculated totals and the most popular requested unit type.
 
 ---
 

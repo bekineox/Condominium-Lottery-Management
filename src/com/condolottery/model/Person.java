@@ -2,7 +2,6 @@ package com.condolottery.model;
 
 /**
  * Base class representing a person in the system.
- * Demonstrates: encapsulation, and basic inheritance (no abstract).
  * Subclasses: Applicant, Admin
  */
 public class Person {
@@ -14,7 +13,6 @@ public class Person {
 
     /**
      * Constructs a Person with the given details.
-     * Demonstrates: this keyword for field assignment.
      * @param id unique identifier
      * @param fullName full name of the person
      * @param phone phone number

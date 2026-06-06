@@ -2,8 +2,6 @@ package com.condolottery.model;
 
 /**
  * Represents an applicant who registers for the condominium lottery.
- * Demonstrates: inheritance (extends Person), polymorphism (overrides displayInfo()),
- * and encapsulation (private fields with getters/setters).
  */
 public class Applicant extends Person {
 
@@ -14,7 +12,6 @@ public class Applicant extends Person {
 
     /**
      * Constructs an Applicant with all required details.
-     * Demonstrates: traditional constructor without super() chaining.
      * @param id unique applicant ID
      * @param fullName full name
      * @param phone phone number

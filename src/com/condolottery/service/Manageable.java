@@ -2,7 +2,6 @@ package com.condolottery.service;
 
 /**
  * Generic interface defining standard management operations.
- * Demonstrates: generics (type parameter T) and interface usage.
  * All service classes implement this interface.
  *
  * @param <T> the type of entity managed by the service

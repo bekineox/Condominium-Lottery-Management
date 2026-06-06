@@ -6,6 +6,8 @@ package com.condolottery.exception;
  */
 public class RegistrationException extends Exception {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Constructs a new RegistrationException with the specified message.
      * @param message the detail message

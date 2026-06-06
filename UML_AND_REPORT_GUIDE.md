@@ -3,23 +3,27 @@
 ## 📊 UML Class Diagram Files
 
 ### File: `UML_CLASS_DIAGRAM.puml`
+
 **Format:** PlantUML source code
 
 PlantUML is a simple syntax for creating diagrams from text. You have multiple options to view/render it:
 
 ### Option 1: Online Renderer (Easiest - No Installation)
+
 1. Go to: https://www.plantuml.com/plantuml/uml/
 2. Copy entire contents of `UML_CLASS_DIAGRAM.puml`
 3. Paste into the text area
 4. View or export as PNG/PDF
 
 ### Option 2: VS Code Extension
+
 1. Install PlantUML extension: `jebbs.plantuml`
 2. Open `UML_CLASS_DIAGRAM.puml` in VS Code
 3. Press `Alt+D` to preview
 4. Right-click → Export to PNG
 
 ### Option 3: Command Line (Requires Installation)
+
 ```bash
 # Install PlantUML (requires Java)
 # macOS: brew install plantuml
@@ -33,6 +37,7 @@ plantuml UML_CLASS_DIAGRAM.puml
 ```
 
 ### Option 4: IDE Integration
+
 - **IntelliJ IDEA:** Install PlantUML plugin from marketplace
 - **Eclipse:** Install PlantUML Eclipse plugin
 - **NetBeans:** Available through plugin manager
@@ -42,9 +47,11 @@ plantuml UML_CLASS_DIAGRAM.puml
 ## 📄 Project Report
 
 ### File: `PROJECT_REPORT.txt`
+
 **Format:** Plain text (readable in any editor)
 **Length:** ~3 pages
 **Contains:**
+
 - Project title & description
 - System architecture diagram
 - Complete class descriptions with roles
@@ -54,6 +61,7 @@ plantuml UML_CLASS_DIAGRAM.puml
 - Conclusion
 
 **To View:**
+
 - Open in any text editor (Notepad, VS Code, IDE, etc.)
 - Or read in terminal: `cat PROJECT_REPORT.txt` (Linux/Mac) or `type PROJECT_REPORT.txt` (Windows)
 
@@ -64,6 +72,7 @@ plantuml UML_CLASS_DIAGRAM.puml
 The PlantUML diagram includes:
 
 ### Enums (Yellow boxes)
+
 ```
 ┌──────────────────────┐
 │ UnitType     <<enum>>│
@@ -74,15 +83,18 @@ The PlantUML diagram includes:
 │ THREE_BEDROOM        │
 └──────────────────────┘
 ```
+
 - **UnitType** — apartment size constant
 - **RegistrationStatus** — workflow state (PENDING, APPROVED, WON, LOST)
 
 ### Exceptions (Red/Pink boxes)
+
 ```
 └── RegistrationException (checked exception)
 ```
 
 ### Base Class (Gray box)
+
 ```
 ┌──────────────────────────┐
 │ Person                   │
@@ -96,6 +108,7 @@ The PlantUML diagram includes:
 ```
 
 ### Models (Gray boxes)
+
 ```
 Applicant (extends Person)
 ├── email, address, registrationDate
@@ -114,6 +127,7 @@ Registration
 ```
 
 ### Services (Green boxes)
+
 ```
 Manageable<T> (Interface)
 ├── add(T)
@@ -134,6 +148,7 @@ Each service:
 ```
 
 ### Main Application (Blue box)
+
 ```
 Main
 ├── Static services
@@ -144,6 +159,7 @@ Main
 ```
 
 ### Relationships
+
 - **→** (extends) — Inheritance
 - **-|** (implements) — Interface implementation
 - **→** (uses) — Association/Dependency
@@ -161,8 +177,9 @@ User starts application (Main.java)
     2. Manage Registrations
     3. Conduct Lottery Draw
     4. View Lottery Winners
-    5. Demonstrate Polymorphism
-    6. Exit
+    5. System Directory
+    6. System Statistics
+    7. Exit
          ↓
     User selects option
          ↓
@@ -187,7 +204,7 @@ User starts application (Main.java)
          ↓
     Return to MAIN MENU
          ↓
-    Repeat until user selects Exit (6)
+    Repeat until user selects Exit (5)
 ```
 
 ---
@@ -220,23 +237,28 @@ File updated: data/applicants.txt
 ## 🎯 Key Design Patterns Used
 
 ### 1. **Layered Architecture**
+
 - Presentation (Main) → Service → Model → Data
 - Clear separation of concerns
 
 ### 2. **Service Pattern**
+
 - Each service manages one entity type
 - Encapsulates business logic
 
 ### 3. **Template Method** (in Manageable interface)
+
 - All services follow CRUD pattern
 - Consistent interface across different types
 
 ### 4. **Polymorphism Pattern**
+
 - Person → Applicant, Admin
 - List<Person> can hold either type
 - displayInfo() method dispatches to correct implementation
 
 ### 5. **Repository Pattern**
+
 - Services act as repositories
 - Load/save from file
 - Query and filtering methods
@@ -300,12 +322,12 @@ By studying this project, students learn:
 
 ## 📞 Document Quick Reference
 
-| Document | Purpose | Read Time |
-|----------|---------|-----------|
-| `PROJECT_REPORT.txt` | Complete analysis & sample output | 15-20 min |
-| `QUICK_REFERENCE.txt` | Fast overview and compilation guide | 5 min |
-| `UML_CLASS_DIAGRAM.puml` | Visual class structure | 10 min |
-| `UML_AND_REPORT_GUIDE.md` | UML viewing instructions | 5 min |
+| Document                  | Purpose                             | Read Time |
+| ------------------------- | ----------------------------------- | --------- |
+| `PROJECT_REPORT.txt`      | Complete analysis & sample output   | 15-20 min |
+| `QUICK_REFERENCE.txt`     | Fast overview and compilation guide | 5 min     |
+| `UML_CLASS_DIAGRAM.puml`  | Visual class structure              | 10 min    |
+| `UML_AND_REPORT_GUIDE.md` | UML viewing instructions            | 5 min     |
 
 ---
 

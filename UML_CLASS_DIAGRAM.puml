@@ -157,13 +157,17 @@ class Main {
   - {static} manageApplicants(): void
   - {static} addApplicant(): void
   - {static} searchApplicant(): void
+  - {static} updateApplicant(): void
   - {static} deleteApplicant(): void
   - {static} manageRegistrations(): void
   - {static} addRegistration(): void
+  - {static} searchRegistration(): void
+  - {static} updateRegistration(): void
   - {static} deleteRegistration(): void
   - {static} conductLotteryDraw(): void
   - {static} displayWinners(): void
-  - {static} demonstratePolymorphism(): void
+  - {static} displaySystemDirectory(): void
+  - {static} displaySystemStatistics(): void
 }
 
 ' ==================== RELATIONSHIPS ====================

@@ -3,7 +3,8 @@
            CONDOMINIUM LOTTERY REGISTRATION SYSTEM — A Java OOP Implementation
 ================================================================================
 
-PREPARED FOR: Academic Project
+SUBMITTED TO: Abdisa K.
+SUBMISSION DATE: Last week of second semester
 DATE: June 4, 2026
 LANGUAGE: Java SE (JDK 8+)
 ARCHITECTURE: Layered (Presentation → Service → Model → Persistence)
@@ -113,9 +114,8 @@ Code reuse is achieved by allowing subclasses to inherit from a parent class.
 D. POLYMORPHISM & DYNAMIC BINDING
 The same method call produces different behavior based on runtime object types.
 • `Applicant` and `Admin` override the `Person.displayInfo()` method.
-• In `Main.java`, a polymorphic collection (`List<Person>`) holds both types.
-• Iterating through this list and calling `displayInfo()` dynamically binds to
-  the correct format (Applicant or Admin) at runtime.
+• At runtime, calling `displayInfo()` on a subclass object uses the overridden method.
+• The "System Directory" main menu option demonstrates dynamic binding by storing both Applicant and Admin objects in a single `List<Person>` and invoking `displayInfo()` on each iteratively.
 
 E. INTERFACES & GENERICS
 Providing type-safe templates and behavior contracts.
@@ -132,6 +132,9 @@ G. EXCEPTION HANDLING
 Separating normal execution flow from error cases gracefully.
 • Standard `try-catch` blocks are used comprehensively for error control. 
 • `RegistrationException` (checked) manages strict business rule violations.
+
+H. CREATIVITY & DATA AGGREGATION
+• The System Statistics Dashboard adds an analytical layer to the system. It iteratively analyzes all registrations to aggregate metrics (calculating the total count of registrations, filtering winners, and finding the most popular UnitType). This goes beyond standard CRUD operations.
 
 
 ────────────────────────────────────────────────────────────────────────────────
@@ -170,18 +173,20 @@ Below is the actual console transcript showing a complete workflow run:
 ║  2. Manage Registrations                 ║
 ║  3. Conduct Lottery Draw                 ║
 ║  4. View Lottery Winners                 ║
-║  5. Demonstrate Polymorphism             ║
-║  6. Exit                                 ║
+║  5. System Directory (View All Users)    ║
+║  6. System Statistics Dashboard          ║
+║  7. Exit                                 ║
 ╚══════════════════════════════════════════╝
-  Enter your choice (1-6): 1
+  Enter your choice (1-7): 1
 
   --- Applicant Management ---
   1. Add Applicant
   2. Display All Applicants
   3. Search by ID
   4. Delete Applicant
-  5. Back to Main Menu
-  Enter your choice (1-5): 1
+  5. Update Applicant
+  6. Back to Main Menu
+  Enter your choice (1-6): 1
 
   --- Add New Applicant ---
   Applicant ID: APP001
@@ -196,8 +201,9 @@ Below is the actual console transcript showing a complete workflow run:
   2. Display All Applicants
   3. Search by ID
   4. Delete Applicant
-  5. Back to Main Menu
-  Enter your choice (1-5): 1
+  5. Update Applicant
+  6. Back to Main Menu
+  Enter your choice (1-6): 1
 
   --- Add New Applicant ---
   Applicant ID: APP002
@@ -212,20 +218,23 @@ Below is the actual console transcript showing a complete workflow run:
   2. Display All Applicants
   3. Search by ID
   4. Delete Applicant
-  5. Back to Main Menu
-  Enter your choice (1-5): 5
+  5. Update Applicant
+  6. Back to Main Menu
+  Enter your choice (1-6): 6
 
 --------------------------------------------------------------------------------
 2. Registering Applicants for a Unit Type (STUDIO)
 --------------------------------------------------------------------------------
-  Enter your choice (1-6): 2
+  Enter your choice (1-5): 2
 
   --- Registration Management ---
   1. New Registration
   2. Display All
-  3. Delete Registration
-  4. Back to Main Menu
-  Enter your choice (1-4): 1
+  3. Search by ID
+  4. Update Registration
+  5. Delete Registration
+  6. Back to Main Menu
+  Enter your choice (1-6): 1
 
   --- Create New Registration ---
   Registration ID: REG001
@@ -241,9 +250,11 @@ Below is the actual console transcript showing a complete workflow run:
   --- Registration Management ---
   1. New Registration
   2. Display All
-  3. Delete Registration
-  4. Back to Main Menu
-  Enter your choice (1-4): 1
+  3. Search by ID
+  4. Update Registration
+  5. Delete Registration
+  6. Back to Main Menu
+  Enter your choice (1-6): 1
 
   --- Create New Registration ---
   Registration ID: REG002
@@ -266,7 +277,7 @@ Below is the actual console transcript showing a complete workflow run:
 --------------------------------------------------------------------------------
 3. Conducting the Lottery Draw
 --------------------------------------------------------------------------------
-  Enter your choice (1-6): 3
+  Enter your choice (1-5): 3
 
   --- Conduct Lottery Draw ---
   Available Unit Types:
@@ -290,7 +301,7 @@ Below is the actual console transcript showing a complete workflow run:
 --------------------------------------------------------------------------------
 4. Viewing Lottery Winners
 --------------------------------------------------------------------------------
-  Enter your choice (1-6): 4
+  Enter your choice (1-5): 4
 
   ======= LOTTERY WINNERS =======
   [Registration Info]
@@ -300,7 +311,7 @@ Below is the actual console transcript showing a complete workflow run:
   Date            : Thu Jun 04 22:12:46 EAT 2026
   Status          : WON
 
-  Enter your choice (1-6): 6
+  Enter your choice (1-5): 5
   ✓ Thank you for using the Condominium Lottery Registration System. Goodbye!
 
 
